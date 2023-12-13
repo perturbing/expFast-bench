@@ -66,6 +66,12 @@
           shell.buildInputs = with nixpkgs.pkgsBuildBuild; [
             # gitAndTools.git
             # sqlite-interactive
+            (python3.withPackages (ps: with ps; [
+              matplotlib
+              numpy
+              pandas
+              scipy
+            ]))
           ];
           shell.withHoogle = true;
 

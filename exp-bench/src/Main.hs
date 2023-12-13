@@ -46,7 +46,8 @@ modExpFastBenchmark modulusSize (base, exponent, modulus) =
 writeBench :: Int -> Int -> Int -> IO ()
 writeBench psize bsize esize = do
     let myConfig = defaultConfig { csvFile = Just ("data/"<>show psize <> "/benchmark_results_"<> show bsize <> "_" <> show esize <> ".csv"), verbosity = Quiet }
-    env <- replicateM 10 (setupEnv psize bsize esize)
+    -- set here how many times you want to run the benchmark per setup (baseSize, exponentSize, modulusSize)
+    env <- replicateM 1 (setupEnv psize bsize esize)
     defaultMainWith myConfig [
         bgroup "pSize: " (map (modExpFastBenchmark psize) env)
         ]
@@ -59,7 +60,9 @@ writeBenchResults psize = do
 
 main :: IO ()
 main = do
-    writeBenchResults 16
-    writeBenchResults 32
-    writeBenchResults 48
-    writeBenchResults 64
+    print "Running benchmarks..."
+    -- writeBenchResults 16
+    -- writeBenchResults 32
+    -- writeBenchResults 48
+    -- writeBenchResults 64
+    print "benchmarking uncommented in the code to not overwrite the results"
