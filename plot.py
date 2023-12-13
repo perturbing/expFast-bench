@@ -46,10 +46,10 @@ def plot_3d_from_file(file_name, plot_title):
     plt.show(block=False)
 
 # File name
-file_name1 = "128-bit-prime-modulus.csv"
-file_name2 = "256-bit-prime-modulus.csv"
-file_name3 = "384-bit-prime-modulus.csv"
-file_name4 = "512-bit-prime-modulus.csv"
+file_name1 = "128-bit-prime-modulus-gmp.csv"
+file_name2 = "256-bit-prime-modulus-gmp.csv"
+file_name3 = "384-bit-prime-modulus-gmp.csv"
+file_name4 = "512-bit-prime-modulus-gmp.csv"
 
 # Call the function with the file names
 plot_3d_from_file(file_name1, "Plot for " + file_name1)

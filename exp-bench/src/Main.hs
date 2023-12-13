@@ -1,13 +1,24 @@
+{-# LANGUAGE MagicHash     #-}
+{-# LANGUAGE UnboxedTuples #-}
+
 module Main where
 
 import Criterion.Main
 import Criterion.Types
-import Crypto.Number.ModArithmetic (expFast)
 import Crypto.Random (getRandomBytes)
 import Crypto.Number.Prime (generatePrime)
 import Crypto.Number.Serialize (os2ip)
 import Data.ByteString (ByteString)
 import Control.Monad (replicateM)
+-- import Crypto.Number.ModArithmetic (expFast)
+
+import GHC.Num.Integer (integerPowMod#,integerToNatural, integerFromNatural)
+
+-- Function to compute the modular exponentiation
+expFast2 :: Integer -> Integer -> Integer -> Integer
+expFast2 base exp modulus = case integerPowMod# base exp (integerToNatural modulus) of
+        (# n | #) -> integerFromNatural n
+        (# | () #) -> error "expFast2 failed"
 
 randomInteger :: Int -> IO Integer
 randomInteger size = os2ip <$> (getRandomBytes size :: IO ByteString)
@@ -41,13 +52,13 @@ setupEnv pSizeBits bSize eSize = do
 modExpFastBenchmark :: Int -> (Integer, Integer, Integer) -> Benchmark
 modExpFastBenchmark modulusSize (base, exponent, modulus) =
     bench (show modulusSize ++ " bytes") $
-    whnf (expFast base exponent) modulus
+    whnf (expFast2 base exponent) modulus
 
 writeBench :: Int -> Int -> Int -> IO ()
 writeBench psize bsize esize = do
     let myConfig = defaultConfig { csvFile = Just ("data/"<>show psize <> "/benchmark_results_"<> show bsize <> "_" <> show esize <> ".csv"), verbosity = Quiet }
     -- set here how many times you want to run the benchmark per setup (baseSize, exponentSize, modulusSize)
-    env <- replicateM 1 (setupEnv psize bsize esize)
+    env <- replicateM 10 (setupEnv psize bsize esize)
     defaultMainWith myConfig [
         bgroup "pSize: " (map (modExpFastBenchmark psize) env)
         ]
@@ -61,8 +72,8 @@ writeBenchResults psize = do
 main :: IO ()
 main = do
     print "Running benchmarks..."
-    -- writeBenchResults 16
-    -- writeBenchResults 32
-    -- writeBenchResults 48
-    -- writeBenchResults 64
-    print "benchmarking uncommented in the code to not overwrite the results"
+    writeBenchResults 16
+    writeBenchResults 32
+    writeBenchResults 48
+    writeBenchResults 64
+    -- print "benchmarking uncommented in the code to not overwrite the results"
