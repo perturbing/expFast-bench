@@ -78,4 +78,4 @@ main = do
     writeBenchResults 32
     writeBenchResults 48
     writeBenchResults 64
-    print "benchmarking uncommented in the code to not overwrite the results"
+    -- print "benchmarking uncommented in the code to not overwrite the results"
