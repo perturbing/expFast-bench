@@ -72,8 +72,8 @@ writeBenchResults psize = do
 main :: IO ()
 main = do
     print "Running benchmarks..."
-    writeBenchResults 16
-    writeBenchResults 32
-    writeBenchResults 48
-    writeBenchResults 64
-    -- print "benchmarking uncommented in the code to not overwrite the results"
+    -- writeBenchResults 16
+    -- writeBenchResults 32
+    -- writeBenchResults 48
+    -- writeBenchResults 64
+    print "benchmarking uncommented in the code to not overwrite the results"
