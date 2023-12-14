@@ -16,7 +16,9 @@ import GHC.Num.Integer (integerPowMod#,integerToNatural, integerFromNatural)
 
 -- Function to compute the modular exponentiation
 expFast2 :: Integer -> Integer -> Integer -> Integer
-expFast2 base exp modulus = case integerPowMod# base exp (integerToNatural modulus) of
+expFast2 base exp modulus 
+    | modulus == 0 = 0
+    | otherwise = case integerPowMod# base exp (integerToNatural modulus) of
         (# n | #) -> integerFromNatural n
         (# | () #) -> error "expFast2 failed"
 
